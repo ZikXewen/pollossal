@@ -1,5 +1,7 @@
 import { withTRPC } from '@trpc/next'
 import { AppType } from 'next/dist/shared/lib/utils'
+import superjson from 'superjson'
+
 import { AppRouter } from './api/trpc/[trpc]'
 
 const MyApp: AppType = ({ Component, pageProps }) => {
@@ -22,6 +24,7 @@ export default withTRPC<AppRouter>({
        * @link https://react-query.tanstack.com/reference/QueryClient
        */
       // queryClientConfig: { defaultOptions: { queries: { staleTime: 60 } } },
+      transformer: superjson,
     }
   },
   /**
