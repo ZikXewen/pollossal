@@ -1,10 +1,11 @@
-import type { NextComponentType, NextPage } from 'next'
+import type { NextPage } from 'next'
 import Head from 'next/head'
 
 import { trpc } from '@/trpc'
 import { useRef } from 'react'
+import Link from 'next/link'
 
-const QuestionCreator: NextComponentType = () => {
+const PollCreator: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null)
   const client = trpc.useContext()
   const { mutate, isLoading } = trpc.useMutation('addPoll', {
@@ -34,16 +35,16 @@ const Home: NextPage = () => {
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex flex-col">
-        <h1 className="text-2xl font-bold">Questions</h1>
-        <ul>
+      <main className="flex flex-col p-8">
+        <h1 className="text-2xl font-bold">Ongoing Polls</h1>
+        <div className="flex flex-col">
           {data.map((data) => (
-            <li className="text-xl" key={`${data.id}`}>
-              {data.question}
-            </li>
+            <Link href={`/poll/${data.id}`} key={data.id}>
+              <a className="text-xl py-2">{data.question}</a>
+            </Link>
           ))}
-        </ul>
-        <QuestionCreator />
+        </div>
+        <PollCreator />
       </main>
     </div>
   )

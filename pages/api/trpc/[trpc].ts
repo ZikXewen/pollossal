@@ -13,6 +13,12 @@ export const appRouter = trpc
       return await prisma.poll.findMany()
     },
   })
+  .query('getPollById', {
+    input: z.object({ id: z.string() }),
+    async resolve({ input }) {
+      return await prisma.poll.findUnique({ where: { id: input.id } })
+    },
+  })
   .mutation('addPoll', {
     input: z.object({ question: z.string().min(5).max(600) }),
     async resolve({ input }) {
