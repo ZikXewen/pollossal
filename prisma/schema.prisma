@@ -16,5 +16,5 @@ model Poll {
   id String @id @default(cuid())
   createdAt DateTime @default(now())
   endsAt DateTime?
-  question String
+  question String @db.VarChar(1000)
 }

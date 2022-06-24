@@ -2,6 +2,7 @@ import { withTRPC } from '@trpc/next'
 import { AppType } from 'next/dist/shared/lib/utils'
 import superjson from 'superjson'
 
+import '../styles/globals.css'
 import { AppRouter } from './api/trpc/[trpc]'
 
 const MyApp: AppType = ({ Component, pageProps }) => {
