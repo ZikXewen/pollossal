@@ -2,8 +2,11 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 
 import { prisma } from '../utils/db'
+import { trpc } from '../utils/trpc'
 
-const Home: NextPage<{ questions: string }> = ({ questions }) => {
+const Home: NextPage = () => {
+  const { data, isLoading } = trpc.useQuery(['getPolls'])
+  if (isLoading || !data) return <div>Loading...</div>
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
       <Head>
@@ -12,19 +15,10 @@ const Home: NextPage<{ questions: string }> = ({ questions }) => {
       </Head>
       <main>
         <h1 className="font-bold text-xl">This is working.</h1>
-        <p>{questions}</p>
+        <p>{data[0]?.question}</p>
       </main>
     </div>
   )
 }
 
 export default Home
-
-export const getServerSideProps = async () => {
-  const questions = await prisma.poll.findMany()
-  return {
-    props: {
-      questions: JSON.stringify(questions),
-    },
-  }
-}
