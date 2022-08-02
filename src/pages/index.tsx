@@ -1,5 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import PollCard from '../components/PollCard'
 import { trpc } from '../utils/trpc'
 
 type TechnologyCardProps = {
@@ -9,7 +10,7 @@ type TechnologyCardProps = {
 }
 
 const Home: NextPage = () => {
-  const hello = trpc.useQuery(['example.hello', { text: 'from tRPC' }])
+  const hello = trpc.useQuery(['poll.getMyPolls'])
 
   return (
     <>
@@ -20,7 +21,9 @@ const Home: NextPage = () => {
 
       <main className="h-screen container mx-auto items-center py-16">
         <h2 className="text-center text-4xl">Pollossal</h2>
-        {hello.data?.greeting || 'Loading...'}
+        {hello.data?.map((poll) => (
+          <PollCard poll={poll} key={poll.id} />
+        ))}
       </main>
     </>
   )

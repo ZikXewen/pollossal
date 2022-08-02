@@ -1,15 +1,29 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-    provider = "sqlite"
-    url      = env("DATABASE_URL")
+  provider = "mysql"
+  url = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
 }
 
-model Example {
-    id String @id @default(cuid())
+model Poll {
+  id         String    @id @unique @default(cuid())
+  createdAt  DateTime  @default(now())
+  endsAt     DateTime?
+  question   String
+  ownerToken String
+  options    Json
+  votes      Vote[]
+}
+
+model Vote {
+  id         String   @id @unique @default(cuid())
+  createdAt  DateTime @default(now())
+  choice     Int
+  voterToken String
+  pollId     String
+  Poll       Poll     @relation(fields: [pollId], references: [id])
 }
