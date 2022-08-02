@@ -1,7 +1,12 @@
 import type { Poll } from '@prisma/client'
 import Link from 'next/link'
 
-const PollCard = ({ poll }: { poll: Poll }) => {
+interface PollCardProps {
+  poll: Poll
+  copyUrl: (id: string) => void
+}
+
+const PollCard = ({ poll, copyUrl }: PollCardProps) => {
   return (
     <div className="card bg-base-200 my-4">
       <div className="card-body">
@@ -15,10 +20,13 @@ const PollCard = ({ poll }: { poll: Poll }) => {
           </p>
         )}
         <div className="card-actions mt-5 items-center justify-between">
-          <Link href="#">
+          <Link href={`poll/${poll.id}`}>
             <a className="btn btn-outline btn-wide">View</a>
           </Link>
-          <button className="btn btn-outline gap-2">
+          <button
+            className="btn btn-outline gap-2"
+            onClick={() => copyUrl(poll.id)}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4"
