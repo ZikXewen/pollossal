@@ -46,6 +46,7 @@ export default createRouter()
           question: input.question,
           ownerToken: ctx.token,
           choices: { create: input.choices },
+          endsAt: input.endsAt,
         },
       })
     },
@@ -54,6 +55,12 @@ export default createRouter()
     input: z.object({ choiceId: z.string(), pollId: z.string() }),
     async resolve({ input, ctx }) {
       if (!ctx.token) throw new Error('Unauthorized')
+      const poll = await ctx.prisma.poll.findFirst({
+        where: { id: input.pollId },
+        select: { endsAt: true },
+      })
+      if (poll?.endsAt && poll.endsAt.getTime() < new Date().getTime())
+        throw new Error('Poll Ended')
       return await ctx.prisma.vote.create({
         data: {
           voterToken: ctx.token,

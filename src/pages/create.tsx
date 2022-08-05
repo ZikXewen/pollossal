@@ -88,11 +88,28 @@ const Create = () => {
         </table>
         <button
           type="button"
-          className="btn btn-outline w-full mb-8"
+          className="btn btn-outline w-full mb-4"
           onClick={() => append({ name: '' })}
         >
           Add New Choice
         </button>
+        <label className="label">
+          <span className="label-text">Ends at (optional)</span>
+          <span className="label-text-alt">
+            {formState.errors.endsAt?.message}
+          </span>
+        </label>
+        <input
+          type="datetime-local"
+          className="input input-bordered w-full mb-4"
+          {...register('endsAt', {
+            setValueAs: (v: string) => {
+              const d = new Date(v)
+              if (isNaN(d.getTime())) return undefined
+              return d
+            },
+          })}
+        />
         <input type="submit" className="btn btn-primary w-full" />
       </form>
     </main>

@@ -44,7 +44,8 @@ const Poll: NextPage = () => {
       )}
       <div className="w-full gap-4 mt-4">
         {data.choices.map((choice) =>
-          data.currentVote ? (
+          data.currentVote ||
+          (data.endsAt && data.endsAt.getTime() < new Date().getTime()) ? (
             <div
               className={`h-12 p-4 rounded-full flex items-center w-full ${
                 data.currentVote?.choiceId == choice.id &&
