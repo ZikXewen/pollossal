@@ -27,7 +27,7 @@ const Create = () => {
     return (
       <main className="h-screen container mx-auto flex items-center p-4">
         <Head>
-          <title>Poll | Pollossal</title>
+          <title>Creating... | Pollossal</title>
         </Head>
         <progress className="progress progress-primary"></progress>
       </main>
