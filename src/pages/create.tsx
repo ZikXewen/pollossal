@@ -24,7 +24,14 @@ const Create = () => {
     onSuccess: ({ id }) => router.push(`poll/${id}`),
   })
   if (isLoading || data)
-    return <progress className="progress progress-primary"></progress>
+    return (
+      <main className="h-screen container mx-auto flex items-center p-4">
+        <Head>
+          <title>Poll | Pollossal</title>
+        </Head>
+        <progress className="progress progress-primary"></progress>
+      </main>
+    )
   return (
     <main className="h-screen container mx-auto items-center p-4">
       <Head>

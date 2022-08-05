@@ -21,7 +21,7 @@ const Home: NextPage = () => {
         <title>Home | Pollossal</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <h2 className="text-center text-4xl py-12">Pollossal</h2>
+      <h2 className="my-8 btn btn-ghost btn-xl text-4xl w-full">Pollossal</h2>
       <Link href="create">
         <a className="btn btn-block btn-primary">Create new poll</a>
       </Link>

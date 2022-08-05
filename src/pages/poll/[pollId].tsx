@@ -1,5 +1,6 @@
 import { NextPage } from 'next'
 import Head from 'next/head'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { trpc } from '../../utils/trpc'
 import Error404 from '../404'
@@ -33,7 +34,11 @@ const Poll: NextPage = () => {
       <Head>
         <title>{data.question} | Pollossal</title>
       </Head>
-      <h2 className="text-3xl mt-12 mb-4">{data.question}</h2>
+      <Link href="/">
+        <h2 className="mt-8 btn btn-ghost btn-xl text-4xl w-full">Pollossal</h2>
+      </Link>
+      <div className="divider"></div>
+      <h2 className="text-3xl mb-4">{data.question}</h2>
       <p className="text-secondary-content ">
         Poll started at {data.createdAt.toLocaleString()}
       </p>
