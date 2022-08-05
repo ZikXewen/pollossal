@@ -16,7 +16,6 @@ model Poll {
   question    String    @db.VarChar(500)
   ownerToken  String
   choices     Choice[]
-  votes      Vote[]
 }
 
 model Choice {
@@ -24,13 +23,17 @@ model Choice {
   name        String
   pollId      String
   poll        Poll      @relation(fields: [pollId], references: [id])
+  votes       Vote[]
+  @@unique([id, pollId])
 }
 
 model Vote {
   id          String    @id @unique @default(cuid())
   createdAt   DateTime  @default(now())
   voterToken  String
-  pollId      String
-  poll        Poll      @relation(fields: [pollId], references: [id])
   choiceId    String
+  pollId      String
+  choice      Choice    @relation(fields: [choiceId, pollId], references: [id, pollId]) 
+  @@unique([pollId, voterToken])
+  @@index([pollId])
 }
