@@ -9,7 +9,7 @@ import {
 } from '../utils/sharedValidators'
 import { trpc } from '../utils/trpc'
 
-const Create: NextPage = () => {
+const Create = () => {
   const router = useRouter()
   const { control, register, handleSubmit, formState } =
     useForm<createPollInputType>({
@@ -24,11 +24,7 @@ const Create: NextPage = () => {
     onSuccess: ({ id }) => router.push(`poll/${id}`),
   })
   if (isLoading || data)
-    return (
-      <div className="h-screen container mx-auto flex items-center p-4">
-        <progress className="progress progress-primary"></progress>
-      </div>
-    )
+    return <progress className="progress progress-primary"></progress>
   return (
     <main className="h-screen container mx-auto items-center p-4">
       <Head>
@@ -52,8 +48,10 @@ const Create: NextPage = () => {
         <label className="label">
           <span className="label-text">Choices</span>
           <span className="label-text-alt text-error">
-            {formState.errors.choices?.message ||
-              formState.errors.choices?.find?.((i) => i)?.name?.message}
+            {formState.errors.choices?.ref
+              ? formState.errors.choices?.message
+              : formState.errors.choices?.find?.((i) => i?.name?.ref)?.name
+                  ?.message}
           </span>
         </label>
         <table className="table table-zebra w-full mb-4">
@@ -101,4 +99,14 @@ const Create: NextPage = () => {
   )
 }
 
-export default Create
+const CreatePage: NextPage = () => (
+  <main className="h-screen container mx-auto items-center p-4">
+    <Head>
+      <title>Create Poll | Pollossal</title>
+      <link rel="icon" href="/favicon.ico" />
+    </Head>
+    <Create />
+  </main>
+)
+
+export default CreatePage
