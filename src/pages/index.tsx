@@ -16,7 +16,7 @@ const Home: NextPage = () => {
   }
 
   return (
-    <main className="h-screen container mx-auto items-center p-4">
+    <main className="min-h-screen container mx-auto items-center p-4">
       <Head>
         <title>Home | Pollossal</title>
         <link rel="icon" href="/favicon.ico" />
