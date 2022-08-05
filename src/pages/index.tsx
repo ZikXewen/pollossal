@@ -8,7 +8,7 @@ import { trpc } from '../utils/trpc'
 const Home: NextPage = () => {
   const polls = trpc.useQuery(['poll.getMyPolls'])
   const url = env.NEXT_PUBLIC_URL
-    ? `https://${env.NEXT_PUBLIC_URL}`
+    ? `${env.NEXT_PUBLIC_URL}`
     : 'http://localhost:3000'
   // Possibly better with React.useCallback
   const copyUrl = (id: string) => {
