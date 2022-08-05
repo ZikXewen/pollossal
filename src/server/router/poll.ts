@@ -18,7 +18,7 @@ export default createRouter()
         where: { id },
         select: {
           choices: {
-            select: { name: true, _count: true },
+            select: { name: true, _count: true, id: true },
           },
           createdAt: true,
           endsAt: true,
@@ -28,6 +28,7 @@ export default createRouter()
       if (!poll) throw new Error('Poll Not Found')
       const currentVote = await ctx.prisma.vote.findFirst({
         where: { pollId: id, voterToken: ctx.token },
+        select: { choiceId: true },
       })
       const voteCount = poll.choices.reduce(
         (x, choice) => choice._count.votes + x,
@@ -39,13 +40,25 @@ export default createRouter()
   .mutation('create', {
     input: createPollValidator,
     async resolve({ input, ctx }) {
-      console.log(input, ctx)
       if (!ctx.token) throw new Error('Unauthorized')
       return await ctx.prisma.poll.create({
         data: {
           question: input.question,
           ownerToken: ctx.token,
           choices: { create: input.choices },
+        },
+      })
+    },
+  })
+  .mutation('vote', {
+    input: z.object({ choiceId: z.string(), pollId: z.string() }),
+    async resolve({ input, ctx }) {
+      if (!ctx.token) throw new Error('Unauthorized')
+      return await ctx.prisma.vote.create({
+        data: {
+          voterToken: ctx.token,
+          choiceId: input.choiceId,
+          pollId: input.pollId,
         },
       })
     },

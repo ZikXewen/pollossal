@@ -36,4 +36,5 @@ model Vote {
   choice      Choice    @relation(fields: [choiceId, pollId], references: [id, pollId]) 
   @@unique([pollId, voterToken])
   @@index([pollId])
+  @@index([voterToken])
 }
