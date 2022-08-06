@@ -39,32 +39,54 @@ const Poll: NextPage = () => {
       </Link>
       <div className="divider"></div>
       <h2 className="text-3xl mb-4">{data.question}</h2>
-      <p className="text-secondary-content ">
+      <p className="text-secondary-content mb-4">
         Poll started at {data.createdAt.toLocaleString()}
       </p>
       {data.endsAt && (
-        <p className="text-secondary-content">
+        <p className="text-secondary-content mb-4">
           Ends at {data.endsAt.toLocaleString()}
         </p>
       )}
-      <div className="w-full gap-4 mt-4">
-        {data.choices.map((choice) =>
-          data.currentVote ||
-          (data.endsAt && data.endsAt.getTime() < new Date().getTime()) ? (
-            <div
-              className={`h-12 p-4 rounded-full flex items-center w-full ${
-                data.currentVote?.choiceId == choice.id &&
-                'bg-secondary-content'
-              }`}
-            >
-              <p className="flex-1">{choice.name}</p>
-              <progress
-                className="progress progress-primary w-1/5"
-                max={data.voteCount}
-                value={choice._count.votes}
-              ></progress>
-            </div>
-          ) : (
+      {data.currentVote ||
+      (data.endsAt && data.endsAt.getTime() < new Date().getTime()) ? (
+        <table className="table w-full">
+          <thead>
+            <tr>
+              <th className="w-2/5 lg:w-1/2">Choice</th>
+              <th className="w-16 text-center">Votes</th>
+              <th className="w-16 text-center">%</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.choices.map((choice) => (
+              <tr
+                key={choice.id}
+                className={
+                  data.currentVote?.choiceId == choice.id ? 'active' : ''
+                }
+              >
+                <td className="whitespace-normal">{choice.name}</td>
+                <td className="text-center">{choice._count.votes}</td>
+                <td className="text-center">
+                  {(
+                    (choice._count.votes / data.voteCount) * 100 || 0
+                  ).toFixed()}
+                </td>
+                <td>
+                  <progress
+                    className="progress progress-primary"
+                    max={data.voteCount}
+                    value={choice._count.votes}
+                  ></progress>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <div className="w-full gap-4 mt-4">
+          {data.choices.map((choice) => (
             <button
               key={choice.id}
               className="btn btn-ghost normal-case w-full"
@@ -73,9 +95,9 @@ const Poll: NextPage = () => {
             >
               {choice.name}
             </button>
-          )
-        )}
-      </div>
+          ))}
+        </div>
+      )}
     </main>
   )
 }
